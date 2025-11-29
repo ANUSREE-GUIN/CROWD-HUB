@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Login Portal - Eye-Catching</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary-blue': '#4F46E5', 
+                        'primary-hover': '#4338CA',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom style for the fade-in effect */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fadeInUp {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        /* --- Custom Gradient Focus Glow for Inputs --- */
+        .focus-gradient-glow:focus {
+            outline: none !important;
+            box-shadow: 
+                0 0 0 3px rgba(79, 70, 229, 0.5), /* Indigo base glow (inner ring) */
+                0 0 15px rgba(236, 72, 153, 0.8); /* Fuchsia deep glow (outer halo) */
+            border-color: #D1D5DB; 
+        }
+
+        /* Message box styling for alerts (using off-screen positioning for smooth transition) */
+        #messageBox {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            min-width: 280px; /* Ensure message is readable */
+            text-align: center;
+        }
+
+        /* --- Custom Fancy Admin Button Style --- */
+        .admin-button {
+            /* Base Style */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 16px; 
+            border-radius: 9999px; 
+            font-size: 0.875rem; 
+            font-weight: 600; 
+            color: #ffffff;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            
+            /* Gradient Background: Indigo to Fuchsia */
+            background: linear-gradient(90deg, #4F46E5 0%, #EC4899 100%); 
+            border: 2px solid rgba(255, 255, 255, 0.3); 
+            
+            /* Transition for Hover Effects */
+            transition: all 0.3s ease-in-out;
+            
+            /* Box Shadow for depth and glow */
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4); 
+        }
+        
+        .admin-button:hover {
+            /* Subtle shift in gradient */
+            background: linear-gradient(90deg, #4338CA 0%, #DB2777 100%);
+            /* Lift effect */
+            transform: translateY(-2px) scale(1.02);
+            /* Brighter glow */
+            box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6), 0 0 10px rgba(79, 70, 229, 0.5);
+            border-color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .admin-button:active {
+            /* Press effect */
+            transform: translateY(0) scale(0.98);
+            box-shadow: 0 2px 10px rgba(236, 72, 153, 0.4);
+        }
+    </style>
+</head>
+<body class="font-sans">
+
+    <div id="messageBox" class="p-4 rounded-lg shadow-xl transform translate-x-full"></div>
+
+    <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-indigo-900 p-4">
+        
+        <div class="w-full max-w-md p-1 rounded-3xl shadow-2xl animate-fadeInUp
+                     bg-gradient-to-br from-indigo-600 to-fuchsia-800
+                     transition duration-300 ease-in-out transform hover:scale-[1.03] hover:shadow-xl hover:shadow-fuchsia-600/40">
+
+            <div class="bg-white p-8 md:p-10 rounded-2xl">
+                
+                <div class="text-center mb-8">
+                    <svg class="mx-auto h-12 w-12 text-primary-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3v-1m3-4h10a3 3 0 003-3V6a3 3 0 00-3-3H6a3 3 0 00-3 3v1"/>
+                    </svg>
+                    <h2 class="mt-4 text-3xl font-extrabold text-gray-900">
+                        Welcome Back
+                    </h2>
+                    <p class="mt-2 text-sm text-gray-500">
+                        Sign in to continue to your secure dashboard.
+                    </p>
+                </div>
+
+                <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-6" method="POST" action="login_handler.php">
+                    
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-700">
+                            Email address / Username
+                        </label>
+                        <div class="mt-1">
+                            <input id="username" name="username" type="text" autocomplete="email" required
+                                   class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 sm:text-sm transition duration-150 ease-in-out focus-gradient-glow">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700">
+                            Password
+                        </label>
+                        <div class="mt-1">
+                            <input id="password" name="password" type="password" autocomplete="current-password" required
+                                   class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 sm:text-sm transition duration-150 ease-in-out focus-gradient-glow">
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Select Gender
+                        </label>
+                        <div class="flex items-center space-x-6">
+                            <div class="flex items-center">
+                                <input id="male" name="gender" type="radio" value="male" class="focus:ring-primary-blue h-4 w-4 text-primary-blue border-gray-300" checked>
+                                <label for="male" class="ml-3 text-sm font-medium text-gray-700">Male</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="female" name="gender" type="radio" value="female" class="focus:ring-primary-blue h-4 w-4 text-primary-blue border-gray-300">
+                                <label for="female" class="ml-3 text-sm font-medium text-gray-700">Female</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-primary-blue focus:ring-primary-blue border-gray-300 rounded">
+                            <label for="remember-me" class="ml-2 block text-sm text-gray-900">
+                                Remember me
+                            </label>
+                        </div>
+
+                        <div class="text-sm">
+                            <a href="#" class="font-medium text-primary-blue hover:text-primary-hover transition duration-150">
+                                Forgot password?
+                            </a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button type="submit"
+                                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-md text-base font-medium text-white 
+                                        bg-gradient-to-r from-indigo-600 to-fuchsia-800 hover:from-indigo-700 hover:to-fuchsia-900 
+                                        focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-blue transition duration-150 ease-in-out transform hover:scale-[1.01] active:scale-[0.99]">
+                            Log In
+                        </button>
+                    </div>
+                </form>
+
+                <div class="mt-8 text-center text-sm text-gray-600 space-y-3">
+                    <p>
+                        Not a member?
+                        <a href="signup.html" class="font-medium text-primary-blue hover:text-primary-hover transition duration-150">
+                            Create an Account
+                        </a>
+                    </p>
+                    
+                    <p class="text-gray-600 flex flex-col items-center pt-2">
+                        <span>For Admin Login.</span>
+                        <a href="admin_auth_system.html" class="admin-button mt-2">
+                            Click Here
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Message Box Utility ---
+        function showMessage(message, type = 'success') {
+            const messageBox = document.getElementById('messageBox');
+            messageBox.textContent = message;
+
+            // Reset classes and set base styles
+            messageBox.className = 'p-4 rounded-lg shadow-2xl fixed top-5 right-5 z-50 transition duration-300 transform min-w-[280px] text-center';
+
+            // Set type-specific colors
+            if (type === 'success') {
+                messageBox.classList.add('bg-green-500', 'text-white', 'border-4', 'border-green-600');
+            } else if (type === 'error') {
+                messageBox.classList.add('bg-red-500', 'text-white', 'border-4', 'border-red-600');
+            } else if (type === 'info') {
+                messageBox.classList.add('bg-blue-500', 'text-white', 'border-4', 'border-blue-600');
+            } else {
+                messageBox.classList.add('bg-gray-500', 'text-white', 'border-4', 'border-gray-600');
+            }
+
+            // Show the box (slide in from the right)
+            messageBox.classList.remove('translate-x-full');
+            messageBox.classList.add('translate-x-0');
+
+            // Hide the box after 4 seconds (slide out)
+            setTimeout(() => {
+                messageBox.classList.remove('translate-x-0');
+                messageBox.classList.add('translate-x-full');
+            }, 4000);
+        }
+
+        // 🚀 --- FORM HANDLING WITH REDIRECTION (UPDATED) --- 🚀
+        function handleLogin(event) {
+            // CRITICALLY IMPORTANT: Prevent the default form submission (POST action)
+            // This stops the browser from navigating away to the 'login_handler.php' file 
+            // and allows the JavaScript redirect to work.
+            event.preventDefault(); 
+
+            const form = document.getElementById('loginForm');
+            const username = form.username.value;
+            const password = form.password.value;
+
+            // Basic client-side validation check
+            if (username.length < 3) {
+                showMessage("Please enter a valid username or email (must be at least 3 characters).", 'error');
+                return;
+            }
+            if (password.length < 5) {
+                showMessage("Password must be at least 5 characters long.", 'error');
+                return;
+            }
+
+            // ⭐ SUCCESS PATH: Client-side validation passed.
+            
+            // 1. Show the success message
+            showMessage(`Login successful! Redirecting you to the User Panel...`, 'success');
+
+            // 2. Redirect the user to 'user_panel.html' after 1.5 seconds
+            setTimeout(() => {
+                window.location.href = 'user_panel.html'; // <--- THIS IS THE NEW REDIRECTION LINE
+            }, 1500);
+
+            // In a real application, you would make an AJAX/Fetch request to your server here
+            // before redirecting. The redirection would happen inside the successful response handler.
+        }
+    </script>
+</body>
+</html>
