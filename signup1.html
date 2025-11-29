@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Registration Portal - Explore Possibilities</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class', // Enable class-based dark mode
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary-blue': '#4F46E5',
+                        'primary-hover': '#4338CA',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom style for the fade-in effect */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fadeInUp {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        /* --- Custom Gradient Focus Glow for Inputs --- */
+        .focus-gradient-glow:focus {
+            outline: none !important;
+            box-shadow:
+                0 0 0 3px rgba(79, 70, 229, 0.5), /* Indigo base glow (inner ring) */
+                0 0 15px rgba(236, 72, 153, 0.8); /* Fuchsia deep glow (outer halo) */
+            border-color: #D1D5DB;
+        }
+
+        /* --- Custom Fancy Admin Button Style --- */
+        .admin-button {
+            /* Base Style */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 16px; /* py-2 px-4 */
+            border-radius: 9999px; /* full rounded pill shape */
+            font-size: 0.875rem; /* text-sm */
+            font-weight: 600; /* font-semibold */
+            color: #ffffff;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            
+            /* Gradient Background */
+            background: linear-gradient(90deg, #4F46E5 0%, #EC4899 100%); /* primary-blue to fuchsia */
+            border: 2px solid rgba(255, 255, 255, 0.3); /* Subtle white border for 'pop' */
+            
+            /* Transition for Hover Effects */
+            transition: all 0.3s ease-in-out;
+            
+            /* Box Shadow for depth and glow */
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4); /* Fuchsia glow shadow */
+        }
+        
+        .admin-button:hover {
+            /* Subtle shift in gradient */
+            background: linear-gradient(90deg, #4338CA 0%, #DB2777 100%);
+            /* Lift effect */
+            transform: translateY(-2px) scale(1.02);
+            /* Brighter glow */
+            box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6), 0 0 10px rgba(79, 70, 229, 0.5);
+            border-color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .admin-button:active {
+            /* Press effect */
+            transform: translateY(0) scale(0.98);
+            box-shadow: 0 2px 10px rgba(236, 72, 153, 0.4);
+        }
+    </style>
+</head>
+
+<body class="font-sans transition-colors duration-500">
+
+    <div id="messageBox" 
+         class="p-4 rounded-lg shadow-2xl fixed top-5 right-5 z-50 transition duration-300 transform translate-x-full min-w-[280px] text-center">
+    </div>
+
+    <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-indigo-900 p-4">
+
+        <div class="w-full max-w-lg p-1 rounded-3xl shadow-2xl animate-fadeInUp
+                     bg-gradient-to-br from-indigo-600 to-fuchsia-800
+                     transition duration-300 ease-in-out transform hover:scale-[1.03] hover:shadow-xl hover:shadow-fuchsia-600/40">
+
+            <div id="registration-card" class="bg-white dark:bg-gray-800 p-8 md:p-10 rounded-2xl transition-colors duration-500">
+
+                <div class="flex justify-end mb-4">
+                    <button id="darkModeToggle" class="p-2 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 transition-colors duration-300 shadow-md hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-blue">
+                        <svg id="sun-icon" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <svg id="moon-icon" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="text-center mb-8">
+                    <svg class="mx-auto h-12 w-12 text-primary-blue dark:text-fuchsia-400 transition-colors duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM12 14c-4.142 0-6 2.87-6 5.5V20h12v-.5c0-2.63-1.858-5.5-6-5.5z"/>
+                    </svg>
+                    <h2 class="mt-4 text-3xl font-extrabold text-gray-900 dark:text-white transition-colors duration-500">
+                        Create your world to explore the possibilities
+                    </h2>
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 transition-colors duration-500">
+                        Join us and unlock a world of possibilities!
+                    </p>
+                </div>
+                
+                <div class="relative mb-6">
+                    <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                        <div class="w-full border-t border-gray-300 dark:border-gray-600 transition-colors duration-500"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 transition-colors duration-500">
+                            Register with your details
+                        </span>
+                    </div>
+                </div>
+
+                <form id="registerForm" onsubmit="handleRegister(event)" class="space-y-6"
+                      method="POST" action="register_handler.php">
+                      
+                    <div class="md:grid md:grid-cols-2 md:gap-6 space-y-6 md:space-y-0">
+                        <div>
+                            <label for="fullName" class="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                                Full Name
+                            </label>
+                            <div class="mt-1">
+                                <input id="fullName" name="fullName" type="text" autocomplete="name" required
+                                        class="appearance-none block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg shadow-sm placeholder-gray-400 sm:text-sm transition duration-150 ease-in-out focus-gradient-glow">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                                Email address
+                            </label>
+                            <div class="mt-1">
+                                <input id="email" name="email" type="email" autocomplete="email" required
+                                        class="appearance-none block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg shadow-sm placeholder-gray-400 sm:text-sm transition duration-150 ease-in-out focus-gradient-glow">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="md:grid md:grid-cols-2 md:gap-6 space-y-6 md:space-y-0">
+                        <div>
+                            <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                                Password
+                            </label>
+                            <div class="mt-1">
+                                <input id="password" name="password" type="password" autocomplete="new-password" required
+                                        class="appearance-none block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg shadow-sm placeholder-gray-400 sm:text-sm transition duration-150 ease-in-out focus-gradient-glow">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="confirm-password" class="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                                Confirm Password
+                            </label>
+                            <div class="mt-1">
+                                <input id="confirm-password" name="confirm-password" type="password" autocomplete="new-password" required
+                                        class="appearance-none block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg shadow-sm placeholder-gray-400 sm:text-sm transition duration-150 ease-in-out focus-gradient-glow">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                            Phone Number
+                        </label>
+                        <div class="mt-1">
+                            <input id="phone" name="phone" type="tel" autocomplete="tel"
+                                    class="appearance-none block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg shadow-sm placeholder-gray-400 sm:text-sm transition duration-150 ease-in-out focus-gradient-glow">
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
+                            Select Gender
+                        </label>
+                        <div class="flex items-center space-x-6">
+                            <div class="flex items-center">
+                                <input id="male" name="gender" type="radio" value="male" class="focus:ring-primary-blue h-4 w-4 text-primary-blue border-gray-300 dark:bg-gray-700" checked>
+                                <label for="male" class="ml-3 text-sm font-medium text-gray-700 dark:text-gray-200">Male</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="female" name="gender" type="radio" value="female" class="focus:ring-primary-blue h-4 w-4 text-primary-blue border-gray-300 dark:bg-gray-700">
+                                <label for="female" class="ml-3 text-sm font-medium text-gray-700 dark:text-gray-200">Female</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="other" name="gender" type="radio" value="other" class="focus:ring-primary-blue h-4 w-4 text-primary-blue border-gray-300 dark:bg-gray-700">
+                                <label for="other" class="ml-3 text-sm font-medium text-gray-700 dark:text-gray-200">Other</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input id="terms" name="terms" type="checkbox" required
+                                class="h-4 w-4 text-primary-blue focus:ring-primary-blue border-gray-300 dark:bg-gray-700 rounded">
+                        <label for="terms" class="ml-2 block text-sm text-gray-900 dark:text-gray-200">
+                            I agree to the
+                            <a href="#" class="font-medium text-primary-blue hover:text-primary-hover transition duration-150">
+                                Terms and Conditions
+                            </a>
+                        </label>
+                    </div>
+
+                    <div>
+                        <button type="submit"
+                                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-md text-base font-medium text-white
+                                         bg-gradient-to-r from-indigo-600 to-fuchsia-800 hover:from-indigo-700 hover:to-fuchsia-900
+                                         focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-blue transition duration-150 ease-in-out transform hover:scale-[1.01] active:scale-[0.99] focus:ring-offset-white dark:focus:ring-offset-gray-800">
+                            Create Account
+                        </button>
+                    </div>
+                </form>
+                <div class="mt-8 text-center text-sm space-y-3">
+                    <p class="text-gray-600 dark:text-gray-400">
+                        Already have an account?
+                        <a href="login_3.html" class="font-medium text-primary-blue hover:text-primary-hover transition duration-150">
+                            Sign in
+                        </a>
+                    </p>
+                    
+                    <p class="text-gray-600 dark:text-gray-400 flex flex-col items-center pt-2">
+                        <span>For Admin Login.</span>
+                        <a href="admin_auth_system.html" class="admin-button mt-2">
+                            Click Here
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Dark Mode Logic --- (Kept as is)
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+        const body = document.body;
+
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            body.classList.add('dark');
+            sunIcon.classList.remove('hidden');
+            moonIcon.classList.add('hidden');
+        } else {
+            sunIcon.classList.add('hidden');
+            moonIcon.classList.remove('hidden');
+        }
+
+        darkModeToggle.addEventListener('click', () => {
+            if (body.classList.contains('dark')) {
+                body.classList.remove('dark');
+                localStorage.theme = 'light';
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            } else {
+                body.classList.add('dark');
+                localStorage.theme = 'dark';
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            }
+        });
+
+        // --- Message Box Utility --- (Kept as is)
+        function showMessage(message, type = 'success') {
+            const messageBox = document.getElementById('messageBox');
+            messageBox.textContent = message;
+
+            messageBox.className = 'p-4 rounded-lg shadow-2xl fixed top-5 right-5 z-50 transition duration-300 transform min-w-[280px] text-center';
+
+            if (type === 'success') {
+                messageBox.classList.add('bg-green-500', 'text-white', 'border-4', 'border-green-600');
+            } else if (type === 'error') {
+                messageBox.classList.add('bg-red-500', 'text-white', 'border-4', 'border-red-600');
+            } else if (type === 'info') {
+                messageBox.classList.add('bg-blue-500', 'text-white', 'border-4', 'border-blue-600');
+            } else {
+                messageBox.classList.add('bg-gray-500', 'text-white', 'border-4', 'border-gray-600');
+            }
+
+            messageBox.classList.remove('translate-x-full');
+            messageBox.classList.add('translate-x-0');
+
+            setTimeout(() => {
+                messageBox.classList.remove('translate-x-0');
+                messageBox.classList.add('translate-x-full');
+            }, 4000);
+        }
+
+        // 🟢🟢🟢 CRITICAL FIX: Use Fetch/AJAX to talk to PHP 🟢🟢🟢
+        function handleRegister(event) {
+            
+            // 1. Always prevent the default form submission immediately
+            // This is necessary because we will handle the submission manually using fetch.
+            event.preventDefault(); 
+            
+            const form = document.getElementById('registerForm');
+            const fullName = form.fullName.value;
+            const email = form.email.value;
+            const password = form.password.value;
+            const confirmPassword = form['confirm-password'].value;
+            const termsAccepted = form.terms.checked;
+            const phone = form.phone.value;
+
+            let validationFailed = false;
+
+            // --- Client-Side Validation Checks ---
+            if (fullName.length < 3) {
+                showMessage("Please enter your full name.", 'error');
+                validationFailed = true;
+            }
+            // Add other validation checks here (email regex, password length, etc.)
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!validationFailed && !emailRegex.test(email)) {
+                showMessage("Please enter a valid email address.", 'error');
+                validationFailed = true;
+            }
+            const phoneRegex = /^\+?(\d{1,3})?[-. ]?(\(?\d{3}\)?[-. ]?\d{3}[-. ]?\d{4})$/;
+            if (!validationFailed && phone.trim() !== "" && !phoneRegex.test(phone)) {
+                 showMessage("Please enter a valid phone number (optional).", 'error');
+                 validationFailed = true;
+            }
+            if (!validationFailed && password.length < 8) {
+                showMessage("Password must be at least 8 characters long.", 'error');
+                validationFailed = true;
+            }
+            if (!validationFailed && password !== confirmPassword) {
+                showMessage("Passwords do not match.", 'error');
+                validationFailed = true;
+            }
+            if (!validationFailed && !termsAccepted) {
+                showMessage("You must agree to the Terms and Conditions.", 'error');
+                validationFailed = true;
+            }
+
+            if (validationFailed) {
+                return; // Stop if client-side validation failed
+            }
+            // --- End Validation ---
+
+
+            // 2. Client-side validation passed, now send to the server (PHP)
+            showMessage(`Validation passed. Sending data to server...`, 'info');
+
+            const formData = new FormData(form);
+            
+            fetch(form.action, {
+                method: 'POST',
+                body: formData // Sends all form fields (fullName, email, password, etc.)
+            })
+            .then(response => response.text()) // Get the raw text response from PHP
+            .then(data => {
+                // Check the explicit success/error message returned by the PHP script
+                if (data.includes("SUCCESS:")) {
+                    showMessage(`Registration complete! Redirecting to login...`, 'success');
+                    
+                    // Redirect after a short delay
+                    setTimeout(() => {
+                        window.location.href = 'login_3.html';
+                    }, 1500);
+                } else if (data.includes("ERROR:")) {
+                    // Display the specific error message returned by PHP
+                    // (e.g., "This email address is already registered.")
+                    showMessage(`Registration Failed: ${data.replace('ERROR:', '').trim()}`, 'error');
+                } else {
+                    // Fallback for unexpected PHP output (e.g., configuration issues)
+                    showMessage(`Unexpected Server Response. Check PHP error logs.`, 'error');
+                }
+            })
+            .catch(error => {
+                // Handle network failure (server is down or connection lost)
+                showMessage(`Network error: Could not contact server.`, 'error');
+                console.error("Fetch Error:", error);
+            });
+        }
+    </script>
+</body>
+
+</html>
